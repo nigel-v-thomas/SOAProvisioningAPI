@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+	<property name="LOG_PATH"
+	        value="./"/>
+			
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type
+		     ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<encoder>
+		  <Pattern>%p %d{yyyy-MM-dd' 'HH:mm:ss.SSS} [%t] (%c{0}\\) %m%n</Pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_PATH}all${logfile.extension:-.log}</File>
+		<encoder>
+		  <Pattern>%p %d{yyyy-MM-dd' 'HH:mm:ss.SSS} [%t] (%c{0}\\) %m%n</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		  <fileNamePattern>${LOG_PATH}all${logfile.extension:-.log}-%d{yyyy-MM-dd}.%i</fileNamePattern>
+		  <timeBasedFileNamingAndTriggeringPolicy
+		        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+			<maxFileSize>20MB</maxFileSize>      	
+		  </timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+	
+	<root additivity="false" level="DEBUG">
+		<appender-ref ref="ALL"/>
+	</root>
+</configuration>

@@ -1,0 +1,325 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>uk.me.nvt</groupId>
+  <artifactId>SOAProvisioningAPI</artifactId>
+  <version>1.1</version>
+  <packaging>war</packaging>
+  
+   <repositories>
+	<repository>
+	    <id>maven2-repository.dev.java.net</id>
+	    <name>Java.net Repository for maven</name>
+	    <url>http://download.java.net/maven/2/</url>
+	</repository>
+    <repository>
+      <id>owasp-java-html-sanitizer</id>
+      <url>http://owasp-java-html-sanitizer.googlecode.com/svn/maven</url>
+    </repository>
+  </repositories>
+  <properties>
+  	<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+	<tomcat.version>tomcat6x</tomcat.version>
+	<tomcat.hostname>localhost</tomcat.hostname>
+	<tomcat.username>tomcat</tomcat.username>
+	<tomcat.protocol>http</tomcat.protocol>
+  </properties>
+  <dependencies>
+	<dependency>
+	  <groupId>javax.annotation</groupId>
+	  <artifactId>jsr250-api</artifactId>
+	  <version>1.0</version>
+	</dependency>
+	
+	<!-- Jersey server related dependencies -->
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-server</artifactId>
+		<version>1.17</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-server-linking</artifactId>
+		<version>1.17</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-json</artifactId>
+		<version>1.17</version>
+	</dependency>
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-classic</artifactId>
+		<version>0.9.26</version>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+		<version>1.6.2</version>
+	</dependency>
+    
+    <!-- Spring dependencies -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<version>${org.springframework.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<version>${org.springframework.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>hsqldb</groupId>
+		<artifactId>hsqldb</artifactId>
+		<version>1.8.0.7</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.sun.jersey.contribs</groupId>
+	    <artifactId>jersey-spring</artifactId>
+	    <version>1.12</version>
+   			<exclusions>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-web</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+		         <artifactId>spring-aop</artifactId>
+		         <groupId>org.springframework</groupId>
+		       </exclusion>
+			</exclusions>
+	</dependency>
+	<dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-lang3</artifactId>
+    	<version>3.0</version>
+    </dependency>
+    <!-- Adding spring security dependencies -->
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-core</artifactId>
+		<version>${org.springframework.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-web</artifactId>
+		<version>${org.springframework.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-config</artifactId>
+		<version>${org.springframework.version}</version>
+	</dependency>
+	<!--  Aspects -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aop</artifactId>
+		<version>${org.springframework.version}</version>
+	</dependency>
+    <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib</artifactId>
+        <version>2.2</version>
+        <scope>runtime</scope>
+   </dependency>
+    <!-- Spring test framework -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${org.springframework.version}</version>
+		<scope>test</scope>
+	</dependency>
+	<!-- Jersey test framework for maven see http://jersey.java.net/nonav/documentation/latest/user-guide.html#test-framework -->
+	<dependency>
+		<groupId>com.sun.jersey.jersey-test-framework</groupId>
+		<artifactId>jersey-test-framework-grizzly2</artifactId>
+		<version>1.12</version>
+		<scope>test</scope>
+	</dependency>
+  </dependencies>
+  <build>
+	<finalName>provisioning-api</finalName>
+	<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+	<outputDirectory>${project.build.directory}/WebRoot/WEB-INF/classes</outputDirectory>
+	<resources>
+		<resource>
+			<directory>${basedir}/src/main/java</directory>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+		</resource>
+		<resource>
+			<directory>src/main/resources</directory>
+		</resource>
+	</resources>
+	<testResources>
+		<testResource>
+			<directory>src/test/resources</directory>
+		</testResource>
+		<testResource>
+			<directory>src/main/webapp</directory>
+		</testResource>
+	</testResources>
+	<plugins>
+		<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>maven-jetty-plugin</artifactId>
+<!-- 			<configuration> -->
+<!-- 				<webApp>${project.build.directory}/ROOT.war</webApp> -->
+<!-- 			</configuration> -->
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-eclipse-plugin</artifactId>
+			<version>2.8</version>
+			<configuration>
+				<outputDirectory>eclipse_build</outputDirectory>
+			</configuration>
+		</plugin>
+		<!--Used to setup war file and apply filters to set properties in the system 
+			see http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
+		<plugin>
+			<artifactId>maven-war-plugin</artifactId>
+			<configuration>
+				<packagingExcludes>**/.svn/, **/Thumbs.db</packagingExcludes>
+				<webappDirectory>${project.build.directory}/WebRoot</webappDirectory>
+				<warSourceDirectory>${basedir}/src/main/webapp/</warSourceDirectory>
+				<warName>provisioning-api</warName>
+			</configuration>
+		</plugin>
+		<plugin>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>1.6</source>
+				<target>1.6</target>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.codehaus.cargo</groupId>
+			<artifactId>cargo-maven2-plugin</artifactId>
+	
+		</plugin>
+		<plugin>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<executions>
+				<execution>
+					<phase>compile</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+					<configuration>
+						<tasks>
+							<copy todir="${project.build.directory}/WebRoot/WEB-INF/classes/">
+								<fileset dir="src/test/resources/">
+									<include name="*.sql" />
+									<include name="*.properties" />
+								</fileset>
+							</copy>
+							<copy todir="${project.build.directory}/WebRoot/">
+								<fileset dir="${project.build.directory}/provisioning-api">
+									<include name="**/*" />
+								</fileset>
+							</copy>
+							<copy file="src/main/resources/web-application-config.xml"
+								tofile="${project.build.directory}/WebRoot/WEB-INF/web-application-config.xml"
+								overwrite="true" />
+						</tasks>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+		<plugin>
+			<groupId>org.codehaus.enunciate</groupId>
+			<artifactId>maven-enunciate-plugin</artifactId>
+			<version>1.25</version>
+			<configuration>
+				<configFile>enunciate.xml</configFile>
+				<outputDir>${project.build.directory}/WebRoot</outputDir>
+				<compileDebug>true</compileDebug>
+			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<goal>assemble</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+	<pluginManagement>
+		<plugins>
+			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>
+										org.apache.maven.plugins
+									</groupId>
+									<artifactId>
+										maven-antrun-plugin
+									</artifactId>
+									<versionRange>[1.3,)</versionRange>
+									<goals>
+										<goal>run</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<execute />
+								</action>
+							</pluginExecution>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>
+										org.codehaus.enunciate
+									</groupId>
+									<artifactId>
+										maven-enunciate-plugin
+									</artifactId>
+									<versionRange>[1.25,)</versionRange>
+									<goals>
+										<goal>assemble</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore />
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+		</plugins>
+	</pluginManagement>
+  </build>
+  <profiles>
+  		<profile>
+			<id>local</id>
+			<properties>
+				<tomcat.port>8080</tomcat.port>
+                <tomcat.password>tomcat</tomcat.password>
+			</properties>
+		</profile>
+  </profiles>
+</project>

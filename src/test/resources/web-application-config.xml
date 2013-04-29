@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.0.xsd">
+
+	<!-- Scan for annotation based controllers -->
+	<context:component-scan base-package="uk.me.nvt">
+		<!-- Added for mocking purposes to exclude live implementation -->
+	</context:component-scan>
+
+	<!-- Enable Aspect J support -->
+	<aop:aspectj-autoproxy />
+
+	<!-- /////////////////////////// Basic Spring security options /////////////////////////// -->
+
+	<security:http use-expressions="true" auto-config="true">
+		<security:intercept-url pattern="/provisioning/student**" access="authenticated" />
+		<security:http-basic/>
+	</security:http>
+
+	<security:authentication-manager  alias="authenticationManager">
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="admin" password="password" authorities="ROLE_ADMIN" />
+				<security:user name="user" password="password" authorities="ROLE_USER" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>	
+</beans>
